@@ -2,10 +2,10 @@
   "name": "devtinder_backend",
   "version": "1.0.0",
   "description": "tiner for devs",
-  "main": "index.js",
+  "main": "src/app.js",
   "scripts": {
     "start": "node src/app.js",
-    "dev":"npx nodemon src/app.js"
+    "dev":  "npx nodemon src/app.js"
   },
   "keywords": [
     "Nodejs",
@@ -14,6 +14,7 @@
   "author": "Atif Saleem",
   "license": "ISC",
   "dependencies": {
-    "express": "^5.1.0"
+    "express": "^5.1.0",
+    "mongoose": "^8.18.1"
   }
 }
