@@ -5,19 +5,34 @@ const coonectDB= require("./config/database.js");
 
 const User=require("./models/User.js")
 
+const {validateSignUpData}=require("./utils/validation.js");
+
+const bcrypt=require("bcrypt");
+
 // to conevert the js object form postman/ ui into json and then we save in db
 app.use(express.json());
 
 // signup API
 app.post("/signup",async (req,res)=>{
-    // creating a new instance of the User Model
-    const user=new User(req.body);
-
     try{
+        //validation of data 
+        validateSignUpData(req);
+
+        //Encrypt the password
+        const {firstName,lastName,emailId,password,gender}=req.body;
+        const passwordHash= await bcrypt.hash(password,10);
+        
+        // creating a new instance of the User Model
+        const user=new User({firstName,
+            lastName,
+            password :passwordHash,
+            emailId,
+            gender});
+            
         await user.save();
         res.send("User Added Succesfully...!")
     }catch(err){
-        res.status(400).send('Error saving the user :'+err.message)
+        res.status(400).send('ERROR :'+err.message)
     }
 });
 
