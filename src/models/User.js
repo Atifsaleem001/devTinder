@@ -1,5 +1,6 @@
-
+const bcrypt=require("bcrypt");
 const mongoose=require("mongoose");
+const jwt=require("jsonwebtoken");
 
 const validator=require("validator");
 
@@ -74,6 +75,24 @@ const UserSchema= new mongoose.Schema({
     }
 
 },{timestamps:true});
+
+
+UserSchema.methods.getJWT=async function () {
+
+    const user=this;
+    const  token=await jwt.sign({_id:user._id},"Dev@Tinder@8948",{expiresIn :"7d"});
+    return token;
+    
+};
+
+UserSchema.methods.validatePassword= async function (passwordInputByuser){
+    const user=this;
+    const passwordHash=user.password;
+
+    const isPaaswordValid=await bcrypt.compare(passwordInputByuser,passwordHash);
+
+    return isPaaswordValid;
+};
 
 
 const User=mongoose.model("User",UserSchema);
